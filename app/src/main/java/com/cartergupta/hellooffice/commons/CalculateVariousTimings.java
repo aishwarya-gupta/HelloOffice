@@ -11,10 +11,10 @@ import java.util.Date;
 
 public class CalculateVariousTimings {
     CustomUtility utils = new CustomUtility();
-    public int inHour;
-    public int outHour;
-    public int inMinute;
-    public int outMinute;
+    public int timeOneHour;
+    public int timeTwoHour;
+    public int timeOneMinute;
+    public int timeTwoMinute;
     public int differenceHours;
     public int differenceMinutes;
     public int totalMinuteDifference;
@@ -41,21 +41,21 @@ public class CalculateVariousTimings {
         return timeIntValues;
     }
 
-    public String totalTimetoday(String fetchedInTime, String fetchedOutTime) {
+    public String totalTimeCalculator(String timeOne, String timeTwo) {
         Log.i("CLASS : ", "CalculateVariousTimings");
-        Log.i("METHOD : ", "totalTimetoday");
-        int[] splittedInTime = timeSplitAndConvertToInt(fetchedInTime);
-        int[] splittedOutTime = timeSplitAndConvertToInt(fetchedOutTime);
-        inHour = splittedInTime[0];
-        inMinute = splittedInTime[1];
-        outHour = splittedOutTime[0];
-        outMinute = splittedOutTime[1];
-        if (inHour == outHour) {
-            differenceMinutes = outMinute - inMinute;
-            totalHours = 00;
+        Log.i("METHOD : ", "totalTimeCalculator");
+        int[] splittedTimeOne = timeSplitAndConvertToInt(timeOne);
+        int[] splittedTimeTwo = timeSplitAndConvertToInt(timeTwo);
+        timeOneHour = splittedTimeOne[0];
+        timeOneMinute = splittedTimeOne[1];
+        timeTwoHour = splittedTimeTwo[0];
+        timeTwoMinute = splittedTimeTwo[1];
+        if (timeOneHour == timeTwoHour) {
+            differenceMinutes = timeTwoMinute - timeOneMinute;
+            totalHours = 0;
         } else {
-            differenceHours = outHour - inHour;
-            differenceMinutes = outMinute - inMinute;
+            differenceHours = timeTwoHour - timeOneHour;
+            differenceMinutes = timeTwoMinute - timeOneMinute;
             totalMinuteDifference = (differenceHours * 60) + differenceMinutes;
             totalHours = (totalMinuteDifference / 60);
             totalMinutes = (totalMinuteDifference % 60);

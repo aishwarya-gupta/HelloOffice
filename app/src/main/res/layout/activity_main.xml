@@ -28,16 +28,16 @@
         android:id="@+id/toggle_button_main"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/displayTotalTime"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
+        android:layout_marginTop="30dp"
         android:background="@drawable/toggle_selector"
         android:checked="false"
         android:onClick="inOutToggleButtonMainActivity"
         android:text=""
         android:textOff="@string/away"
-        android:textOn="@string/in"
-        android:layout_below="@+id/displayTotalTime"
-        android:layout_marginTop="30dp"/>
+        android:textOn="@string/in" />
 
     <TextView
         android:id="@+id/displayInTime"
