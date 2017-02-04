@@ -10,9 +10,6 @@ import com.cartergupta.hellooffice.R;
 import com.cartergupta.hellooffice.commons.CalculateVariousTimings;
 import com.cartergupta.hellooffice.database.MonitorMeDatabaseHelper;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 /**
  * Created by agupta on 31-Jan-17.
  */
@@ -25,20 +22,19 @@ public class MainHandler {
         handlerContext = context;
     }
 
-    public void mainToggleButton(boolean in, View view) {
+    public void inOutToggleButtonMainHandler(boolean in, View view) {
+        Log.i("CLASS : ", "MainHandler");
+        Log.i("METHOD : ", "inOutToggleButtonMainHandler");
+        TextView displayInTime = (TextView) view.findViewById(R.id.displayInTime);
         CalculateVariousTimings timings = new CalculateVariousTimings();
         String formattedDateTime = timings.timeNow();
         String[] splittedDateTime = formattedDateTime.split(" ");
         String formattedDate = splittedDateTime[0];
         String formattedTime = splittedDateTime[1];
-
-        if (in) {   // Enters into Office
-            TextView displayInTime = (TextView) view.findViewById(R.id.displayInTime);
+        if (in) {
             String inTime = formattedTime;
             db = new MonitorMeDatabaseHelper(handlerContext);
-            Log.i("Check 0","Reached here!");
             boolean inTimeAvailableResult = db.checkInTimeAvailable(formattedDate);
-            Log.i("Check 1","Reached here!");
             if (!(inTimeAvailableResult)) { // insert inTime into database
                 boolean inTimeInsertionResult = db.inTimeInsertReport(formattedDate, inTime);
                 if (!(inTimeInsertionResult)) {
@@ -46,22 +42,26 @@ public class MainHandler {
                 }
             }
             String fetchedInTime = db.fetchInTime(formattedDate);
-            displayInTime.setText("    IN TIME - " + fetchedInTime + " Hrs");
-        } else {    // Exits from Office
+            if (fetchedInTime == null) {
+                Toast.makeText(handlerContext, "ERROR : Unable to connect to Database", Toast.LENGTH_LONG).show();
+            } else {
+                displayInTime.setText("    IN TIME - " + fetchedInTime + " Hrs");
+            }
+        } else {
             TextView displayOutTime = (TextView) view.findViewById(R.id.displayOutTime);
             TextView displayTotalTime = (TextView) view.findViewById(R.id.displayTotalTime);
             String outTime = formattedTime;
             boolean outTimeInsertionResult = db.outTimeInsertReport(formattedDate, outTime);
             if (outTimeInsertionResult) {
-                // TODO : fetch both "inTime" and "outTime" for "onDate" - 1st time only
-                // create 1 more column in table - "latestInTime"
-                // fetch both "latestInTime" and "outTime" for "onDate" - after 1st time
-                // timings.totalTimetoday(inTime/latestInTime,outTime);
-                // after 1st time, also add previous totalTime to newTotalTime
-                String totalTimeToday = timings.totalTimetoday();
-                // TODO : update totalTimeToday into database against "onDate"
-                displayOutTime.setText("OUT TIME - " + outTime + " Hrs");
-                displayTotalTime.setText("TOTAL TIME TODAY - " + totalTimeToday + " Hrs");
+                String fetchedInTime = db.fetchInTime(formattedDate);
+                String fetchedOutTime = db.fetchOutTime(formattedDate);
+                if ((fetchedInTime == null) || (fetchedOutTime == null)) {
+                    Toast.makeText(handlerContext, "ERROR : Unable to connect to Database", Toast.LENGTH_LONG).show();
+                } else {
+                    String totalTimeToday = timings.totalTimetoday(fetchedInTime, fetchedOutTime);
+                    displayOutTime.setText("OUT TIME - " + fetchedOutTime + " Hrs");
+                    displayTotalTime.setText("TOTAL TIME TODAY - " + totalTimeToday + " Hrs");
+                }
             } else {
                 Toast.makeText(handlerContext, "ERROR : Please restart application", Toast.LENGTH_LONG).show();
             }

@@ -1,5 +1,7 @@
 package com.cartergupta.hellooffice.commons;
 
+import android.util.Log;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -8,6 +10,7 @@ import java.util.Date;
  */
 
 public class CalculateVariousTimings {
+    CustomUtility utils = new CustomUtility();
     public int inHour;
     public int outHour;
     public int inMinute;
@@ -17,43 +20,47 @@ public class CalculateVariousTimings {
     public int totalMinuteDifference;
     public int totalHours;
     public int totalMinutes;
+    public String totalTime;
 
     public String timeNow() {
+        Log.i("CLASS : ", "CalculateVariousTimings");
+        Log.i("METHOD : ", "timeNow");
         SimpleDateFormat currentTime = new SimpleDateFormat("dd-MM-yyyy HH:mm");
         return currentTime.format(new Date());
     }
 
-    public void timeSplitter() {
-        // TODO : implement time splitter method for inTime and outTime
-        // use ArrayList<int> to store all the splitted values
-        // return ArrayList
-        // change return type to ArrayList<int>
+    public int[] timeSplitAndConvertToInt(String timeToSplit) {
+        Log.i("CLASS : ", "CalculateVariousTimings");
+        Log.i("METHOD : ", "timeSplitAndConvertToInt");
+        String[] splittedTime = timeToSplit.split(":");
+        int hourIntValue = Integer.parseInt(splittedTime[0]);
+        int minuteIntValue = Integer.parseInt(splittedTime[1]);
+        int[] timeIntValues = new int[2];
+        timeIntValues[0] = hourIntValue;
+        timeIntValues[1] = minuteIntValue;
+        return timeIntValues;
     }
 
-    public String totalTimetoday() {    // TODO : Accept 2 String parameteres : inTime & outTime
-        timeSplitter();
-        return "01:50";
-        // call timeSplitter() method and pass "inTime" and "outTime" as parameters
-        // receive an ArrayList<int> of splitted values
-        // assign each value to class variables
-        // calculate total time today operation
-        // convert integer values to String values
-        // combine all values
-        // return a String in the form "xx:yy"
-        // for single x or single y, prefix with "0"
-        /*if(inHr == outHr)
-        {
-            diffMin = outMin - inMin;	// 0 , 15
-            totalHr = 00;
+    public String totalTimetoday(String fetchedInTime, String fetchedOutTime) {
+        Log.i("CLASS : ", "CalculateVariousTimings");
+        Log.i("METHOD : ", "totalTimetoday");
+        int[] splittedInTime = timeSplitAndConvertToInt(fetchedInTime);
+        int[] splittedOutTime = timeSplitAndConvertToInt(fetchedOutTime);
+        inHour = splittedInTime[0];
+        inMinute = splittedInTime[1];
+        outHour = splittedOutTime[0];
+        outMinute = splittedOutTime[1];
+        if (inHour == outHour) {
+            differenceMinutes = outMinute - inMinute;
+            totalHours = 00;
+        } else {
+            differenceHours = outHour - inHour;
+            differenceMinutes = outMinute - inMinute;
+            totalMinuteDifference = (differenceHours * 60) + differenceMinutes;
+            totalHours = (totalMinuteDifference / 60);
+            totalMinutes = (totalMinuteDifference % 60);
         }
-        else	// inHr < outHr
-        {
-            diffHr 	= outHr  - inHr;
-            diffMin = outMin - inMin;
-            totalMinDiff = (diffHr*60) + diffMin;
-            totalHr = (totalMinDiff / 60);
-            totalMin = (totalMinDiff % 60);
-        }
-        totalTime = totalHr + totalMin;	// Total time worked today - xx:yy Hrs*/
+        totalTime = utils.prefixWithZero(totalHours) + ":" + utils.prefixWithZero(totalMinutes);
+        return totalTime;
     }
 }
