@@ -37,6 +37,7 @@ public class MainHandler {
             displayTotalTime.setText("");
             displayOutTime.setText("");
             String inTime = formattedTime;
+            displayInTime.setText("    IN TIME - " + inTime + " Hrs");
             db = new MonitorMeDatabaseHelper(handlerContext);
             boolean inTimeAvailableResult = db.checkInTimeAvailable(formattedDate);
             if (!(inTimeAvailableResult)) {
@@ -45,40 +46,30 @@ public class MainHandler {
                     Toast.makeText(handlerContext, "DATABASE ERROR : Please restart application", Toast.LENGTH_LONG).show();
                 }
             } else {
-                boolean latestInTimeInsertionResult = db.latestInTimeUpdateReport(formattedDate, inTime);
+                boolean latestInTimeInsertionResult = db.latestInTimeInsertReport(formattedDate, inTime);
                 if (!(latestInTimeInsertionResult)) {
                     Toast.makeText(handlerContext, "DATABASE ERROR : Please restart application", Toast.LENGTH_LONG).show();
                 }
             }
-//            boolean latestInTimeInsertionResult = db.latestInTimeUpdateReport(formattedDate, inTime);
-            String fetchedLatestInTime = db.fetchLatestInTime(formattedDate);
-            if (fetchedLatestInTime == null) {
-                Toast.makeText(handlerContext, "DATABASE ERROR : Unable to connect to Database", Toast.LENGTH_LONG).show();
-            } else {
-                displayInTime.setText("    IN TIME - " + fetchedLatestInTime + " Hrs");
-            }
         } else {
             String outTime = formattedTime;
+            displayOutTime.setText("OUT TIME - " + outTime + " Hrs");
             boolean outTimeUpdationResult = db.outTimeUpdateReport(formattedDate, outTime);
             if (outTimeUpdationResult) {
                 String fetchedLatestInTime = db.fetchLatestInTime(formattedDate);
                 String fetchedOutTime = db.fetchOutTime(formattedDate);
-                if ((fetchedLatestInTime == null) || (fetchedOutTime == null)) {
-                    Toast.makeText(handlerContext, "DATABASE ERROR : Unable to connect to Database", Toast.LENGTH_LONG).show();
-                } else {
-                    String totalTimeLatestInterval = timings.totalTimeCalculator(fetchedLatestInTime, fetchedOutTime);
+                if ((fetchedLatestInTime != null) && (fetchedOutTime != null)) {
+                    String totalTimeLatestInterval = timings.timeIntervalCalculator(fetchedLatestInTime, fetchedOutTime);
                     String fetchedTotalTimeToday = db.fetchTotalTimeToday(formattedDate);
                     String totalTimeToday = timings.totalTimeCalculator(totalTimeLatestInterval, fetchedTotalTimeToday);
+                    displayTotalTime.setText("TOTAL TIME TODAY - " + totalTimeToday + " Hrs");
                     boolean totalTimeTodayUpdationResult = db.totalTimeTodayUpdateReport(formattedDate, totalTimeToday);
                     if (!(totalTimeTodayUpdationResult)) {
                         Toast.makeText(handlerContext, "DATABASE ERROR : Please restart application", Toast.LENGTH_LONG).show();
-                    } else {
-                        displayOutTime.setText("OUT TIME - " + fetchedOutTime + " Hrs");
-                        displayTotalTime.setText("TOTAL TIME TODAY - " + totalTimeToday + " Hrs");
                     }
                 }
             } else {
-                Toast.makeText(handlerContext, "ERROR : Please restart application", Toast.LENGTH_LONG).show();
+                Toast.makeText(handlerContext, "DATABASE ERROR : Please restart application", Toast.LENGTH_LONG).show();
             }
         }
     }

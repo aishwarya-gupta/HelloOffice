@@ -20,6 +20,8 @@ public class CalculateVariousTimings {
     public int totalMinuteDifference;
     public int totalHours;
     public int totalMinutes;
+    public int minuteToHour;
+    public int remainingMinutes;
     public String totalTime;
 
     public String timeNow() {
@@ -41,6 +43,30 @@ public class CalculateVariousTimings {
         return timeIntValues;
     }
 
+    public String timeIntervalCalculator(String timeOne, String timeTwo) {
+        Log.i("CLASS : ", "CalculateVariousTimings");
+        Log.i("METHOD : ", "timeIntervalCalculator");
+        int[] splittedTimeOne = timeSplitAndConvertToInt(timeOne);
+        int[] splittedTimeTwo = timeSplitAndConvertToInt(timeTwo);
+        timeOneHour = splittedTimeOne[0];
+        timeOneMinute = splittedTimeOne[1];
+        timeTwoHour = splittedTimeTwo[0];
+        timeTwoMinute = splittedTimeTwo[1];
+        if (timeOneHour == timeTwoHour) {
+            differenceMinutes = timeOneMinute - timeTwoMinute;
+            totalMinutes = Math.abs(differenceMinutes);
+            totalHours = 0;
+        } else {
+            differenceHours = timeTwoHour - timeOneHour;
+            differenceMinutes = timeTwoMinute - timeOneMinute;
+            totalMinuteDifference = (differenceHours * 60) + differenceMinutes;
+            totalHours = (totalMinuteDifference / 60);
+            totalMinutes = (totalMinuteDifference % 60);
+        }
+        totalTime = utils.prefixWithZero(totalHours) + ":" + utils.prefixWithZero(totalMinutes);
+        return totalTime;
+    }
+
     public String totalTimeCalculator(String timeOne, String timeTwo) {
         Log.i("CLASS : ", "CalculateVariousTimings");
         Log.i("METHOD : ", "totalTimeCalculator");
@@ -50,15 +76,13 @@ public class CalculateVariousTimings {
         timeOneMinute = splittedTimeOne[1];
         timeTwoHour = splittedTimeTwo[0];
         timeTwoMinute = splittedTimeTwo[1];
-        if (timeOneHour == timeTwoHour) {
-            differenceMinutes = timeTwoMinute - timeOneMinute;
-            totalHours = 0;
-        } else {
-            differenceHours = timeTwoHour - timeOneHour;
-            differenceMinutes = timeTwoMinute - timeOneMinute;
-            totalMinuteDifference = (differenceHours * 60) + differenceMinutes;
-            totalHours = (totalMinuteDifference / 60);
-            totalMinutes = (totalMinuteDifference % 60);
+        totalMinutes = timeOneMinute + timeTwoMinute;
+        totalHours = timeOneHour + timeTwoHour;
+        if (totalMinutes >= 60) {
+            remainingMinutes = totalMinutes % 60;
+            minuteToHour = totalMinutes / 60;
+            totalHours = totalHours + minuteToHour;
+            totalMinutes = remainingMinutes;
         }
         totalTime = utils.prefixWithZero(totalHours) + ":" + utils.prefixWithZero(totalMinutes);
         return totalTime;

@@ -66,9 +66,9 @@ public class MonitorMeDatabaseHelper extends SQLiteOpenHelper {
     public boolean outTimeUpdateReport(String onDate, String outTime) {
         Log.i("CLASS : ", "MonitorMeDatabaseHelper");
         Log.i("METHOD : ", "outTimeUpdateReport");
-        String maxId = fetchMaxId();
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
+        String maxId = fetchMaxId();
         contentValues.put(FeedReaderContract.FeedEntry.OUT_TIME, outTime);
         String selection = FeedReaderContract.FeedEntry.ON_DATE + " LIKE ? AND _id LIKE ?";
         String[] selectionArgs = {onDate, maxId};
@@ -91,7 +91,7 @@ public class MonitorMeDatabaseHelper extends SQLiteOpenHelper {
         String selection = FeedReaderContract.FeedEntry.ON_DATE + " LIKE ?";
         String[] selectionArgs = {onDate};
         long count = DatabaseUtils.queryNumEntries(db, FeedReaderContract.FeedEntry.TABLE_NAME, selection, selectionArgs);
-        if (count == 1) {
+        if (count >= 1) {
             return true;
         } else {
             return false;
@@ -127,7 +127,7 @@ public class MonitorMeDatabaseHelper extends SQLiteOpenHelper {
         return fetchedOutTime;
     }
 
-    public boolean latestInTimeUpdateReport(String onDate, String latestInTime) {
+    public boolean latestInTimeInsertReport(String onDate, String latestInTime) {
         Log.i("CLASS : ", "MonitorMeDatabaseHelper");
         Log.i("METHOD : ", "latestInTimeInsertReport");
         SQLiteDatabase db = this.getWritableDatabase();
@@ -198,7 +198,7 @@ public class MonitorMeDatabaseHelper extends SQLiteOpenHelper {
         String fetchedTotalTimeToday = "";
         String maxId = fetchMaxId();
         String secondMaxId = fetchSecondMaxId();
-        if (secondMaxId.equals("0")) {
+        if (maxId.equals("1")) {
             dbData = db.rawQuery("SELECT " + totalTimeToday + " FROM " + FeedReaderContract.FeedEntry.TABLE_NAME + " WHERE " + FeedReaderContract.FeedEntry.ON_DATE + " = " + "\"" + onDate + "\" AND _id = " + maxId, null);
         } else {
             dbData = db.rawQuery("SELECT " + totalTimeToday + " FROM " + FeedReaderContract.FeedEntry.TABLE_NAME + " WHERE " + FeedReaderContract.FeedEntry.ON_DATE + " = " + "\"" + onDate + "\" AND _id = " + secondMaxId, null);
