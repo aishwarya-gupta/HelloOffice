@@ -19,18 +19,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("CLASS : ","MainActivity");
-        Log.i("METHOD : ","onCreate");
+        Log.i("CLASS : ", "MainActivity");
+        Log.i("METHOD : ", "onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         db = new MonitorMeDatabaseHelper(this);
-        view = (RelativeLayout)findViewById(R.id.activity_main);
+        view = (RelativeLayout) findViewById(R.id.activity_main);
     }
 
     public void inOutToggleButtonMainActivity(View view) {
-        Log.i("CLASS : ","MainActivity");
-        Log.i("METHOD : ","inOutToggleButtonMainActivity");
+        Log.i("CLASS : ", "MainActivity");
+        Log.i("METHOD : ", "inOutToggleButtonMainActivity");
         boolean in = ((ToggleButton) view).isChecked();
-        handler.inOutToggleButtonMainHandler(in,this.view);
+        handler.inOutToggleButtonMainHandler(in, this.view);
     }
 }

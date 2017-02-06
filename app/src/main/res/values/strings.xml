@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Monitor Me</string>
+    <string name="app_name_capital">MONITOR ME</string>
+    <string name="monitorMeMoto">TRACK ME DOWN..!</string>
     <string name="in">IN</string>
     <string name="away">AWAY</string>
     <string name="first_fragment">First Fragment</string>

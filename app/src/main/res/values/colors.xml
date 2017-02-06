@@ -4,4 +4,5 @@
     <color name="colorPrimary">#D32F2F</color>
     <color name="colorBody">#FFFFFF</color>
     <color name="colorAccent">#D32F2F</color>
+    <color name="lightTitleBar">#FFFFFF</color>
 </resources>

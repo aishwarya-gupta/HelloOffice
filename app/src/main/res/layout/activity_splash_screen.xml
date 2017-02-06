@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_splash_screen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
+    tools:context="com.cartergupta.hellooffice.controller.SplashScreen">
+
+    <TextView
+        android:id="@+id/splashScreenAppTitle"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="130dp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-thin"
+        android:textStyle="bold"
+        android:text="@string/app_name_capital"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:textSize="40dp" />
+
+    <ImageView
+        android:id="@+id/splashScreenImage"
+        android:layout_below="@+id/splashScreenAppTitle"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:src="@drawable/monitormelogored"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"/>
+
+    <TextView
+        android:id="@+id/monitorMeMoto"
+        android:layout_below="@+id/splashScreenImage"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-light"
+        android:text="@string/monitorMeMoto"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:textSize="25dp" />
+</RelativeLayout>
